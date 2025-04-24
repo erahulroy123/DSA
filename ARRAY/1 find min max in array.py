@@ -11,7 +11,6 @@ def find_max_min(arr):
     return max_val, min_val
 arr = [1, 4, 3, 2, 6, 5]
 max_val, min_val = find_max_min(arr)
-print(f"Maximum: {max_val}, Minimum: {min_val}")
 
 #Divide and conquer
 def find_max_min(arr, low, high):
@@ -28,4 +27,3 @@ def find_max_min(arr, low, high):
     return max(left_max, right_max), min(left_min, right_min)
 arr = [1, 4, 3, 2, 6, 5]
 max_val, min_val = find_max_min(arr, 0, len(arr) - 1)
-print(f"Maximum: {max_val}, Minimum: {min_val}")
