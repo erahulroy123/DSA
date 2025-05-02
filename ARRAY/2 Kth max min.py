@@ -1,70 +1,36 @@
-#selection sort
-def kth_min_max_manual_sort(arr, k):
-    n = len(arr)
-    if k < 1 or k > n:
-        return None, None
-    for i in range(n):
-        min_idx = i
-        for j in range(i + 1, n):
-            if arr[j] < arr[min_idx]:
-                min_idx = j
-        arr[i], arr[min_idx] = arr[min_idx], arr[i]
-    kth_min = arr[k - 1]
-    kth_max = arr[n - k]
-    return kth_min, kth_max
-arr = [7, 10, 4, 3, 20, 15]
-k = 3
-kth_min, kth_max = kth_min_max_manual_sort(arr, k)
-
-#min/max heap
+#top k elements
 import heapq
-
-def kth_min_max_heap(arr, k):
-    n = len(arr)
-    if k < 1 or k > n:
+def find_kth_max_min(arr, k):
+    if not arr or k <= 0 or k > len(arr):
         return None, None
-    min_heap = arr.copy()
-    heapq.heapify(min_heap)
-    kth_min = None
-    for _ in range(k):
-        kth_min = heapq.heappop(min_heap)
-    max_heap = [-num for num in arr]
-    heapq.heapify(max_heap)
-    kth_max = None
-    for _ in range(k):
-        kth_max = -heapq.heappop(max_heap)
-    return kth_min, kth_max
-arr = [7, 10, 4, 3, 20, 15]
-k = 3
-kth_min, kth_max = kth_min_max_heap(arr, k)
+    max_kth = heapq.nlargest(k, arr)[-1] 
+    min_kth = heapq.nsmallest(k, arr)[-1]
+    return max_kth, min_kth
 
-#quick select
-def quick_select(arr, low, high, k):
-    if low <= high:
-        pivot_index = partition(arr, low, high)
-
-        if pivot_index == k - 1:
-            return arr[pivot_index]
-        elif pivot_index > k - 1:
-            return quick_select(arr, low, pivot_index - 1, k)
-        else:
-            return quick_select(arr, pivot_index + 1, high, k)
+#modified binary search(quick select)
+import random
 def partition(arr, low, high):
     pivot = arr[high]
-    i = low
+    i = low - 1
     for j in range(low, high):
         if arr[j] <= pivot:
-            arr[i], arr[j] = arr[j], arr[i]
             i += 1
-    arr[i], arr[high] = arr[high], arr[i]
-    return i
-def kth_min_max_quick_select(arr, k):
-    n = len(arr)
-    if k < 1 or k > n:
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+def quickselect(arr, low, high, k):
+    if low <= high:
+        pivot_index = partition(arr, low, high)
+        if pivot_index == k:
+            return arr[pivot_index]
+        elif pivot_index < k:
+            return quickselect(arr, pivot_index + 1, high, k)
+        else:
+            return quickselect(arr, low, pivot_index - 1, k)
+    return None
+def find_kth_max_min(arr, k):
+    if not arr or k <= 0 or k > len(arr):
         return None, None
-    kth_min = quick_select(arr.copy(), 0, n - 1, k)
-    kth_max = quick_select(arr.copy(), 0, n - 1, n - k + 1)
-    return kth_min, kth_max
-arr = [7, 10, 4, 3, 20, 15]
-k = 3
-kth_min, kth_max = kth_min_max_quick_select(arr, k)
+    kth_min = quickselect(arr[:], 0, len(arr) - 1, k - 1)
+    kth_max = quickselect(arr[:], 0, len(arr) - 1, len(arr) - k)
+    return kth_max, kth_min
