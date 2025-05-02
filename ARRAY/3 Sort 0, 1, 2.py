@@ -1,5 +1,5 @@
-#dutch national flag algorithm
-def sort_012(arr):
+#dutch national flag algorithm(three pointer)
+def sort_array(arr):
     low, mid, high = 0, 0, len(arr) - 1
     while mid <= high:
         if arr[mid] == 0:
@@ -12,19 +12,3 @@ def sort_012(arr):
             arr[high], arr[mid] = arr[mid], arr[high]
             high -= 1
     return arr
-arr = [0, 1, 2, 1, 0, 2, 1, 0, 2]
-sorted_arr = sort_012(arr)
-
-#count sort
-def sort_012_count(arr):
-    count = [0, 0, 0] 
-    for num in arr:
-        count[num] += 1
-    index = 0
-    for i in range(3):
-        for j in range(count[i]):
-            arr[index] = i
-            index += 1
-    return arr
-arr = [0, 1, 2, 1, 0, 2, 1, 0, 2]
-sorted_arr = sort_012_count(arr)
