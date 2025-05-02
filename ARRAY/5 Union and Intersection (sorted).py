@@ -1,49 +1,40 @@
-#two pointer merge
-def find_union_intersection(arr1, arr2):
+#two pointer
+def union_of_arrays(arr1, arr2):
+    union = []
     i, j = 0, 0
-    n, m = len(arr1), len(arr2)
-    union_result = []
-    intersection_result = []
-    while i < n and j < m:
-        if i > 0 and arr1[i] == arr1[i-1]:
-            i += 1
-            continue
-        if j > 0 and arr2[j] == arr2[j-1]:
-            j += 1
-            continue
+    while i < len(arr1) and j < len(arr2):
         if arr1[i] < arr2[j]:
-            union_result.append(arr1[i])
+            if not union or union[-1] != arr1[i]:
+                union.append(arr1[i])
             i += 1
-        elif arr2[j] < arr1[i]:
-            union_result.append(arr2[j])
+        elif arr1[i] > arr2[j]:
+            if not union or union[-1] != arr2[j]:
+                union.append(arr2[j])
             j += 1
         else:
-            union_result.append(arr1[i])
-            intersection_result.append(arr1[i])
+            if not union or union[-1] != arr1[i]:
+                union.append(arr1[i])
             i += 1
             j += 1
-    while i < n:
-        if i == 0 or arr1[i] != arr1[i-1]:
-            union_result.append(arr1[i])
+    while i < len(arr1):
+        if not union or union[-1] != arr1[i]:
+            union.append(arr1[i])
         i += 1
-    while j < m:
-        if j == 0 or arr2[j] != arr2[j-1]:
-            union_result.append(arr2[j])
+    while j < len(arr2):
+        if not union or union[-1] != arr2[j]:
+            union.append(arr2[j])
         j += 1
-    return union_result, intersection_result
-arr1 = [1, 2, 4, 5, 6]
-arr2 = [2, 3, 5, 7]
-union_result, intersection_result = find_union_intersection(arr1, arr2)
-
-#using sets
-def find_union_intersection_sets(arr1, arr2):
-    set1 = set(arr1)
-    set2 = set(arr2)
-    union_result = list(set1 | set2)
-    intersection_result = list(set1 & set2)
-    union_result.sort()
-    intersection_result.sort()
-    return union_result, intersection_result
-arr1 = [1, 2, 4, 5, 6]
-arr2 = [2, 3, 5, 7]
-union_result, intersection_result = find_union_intersection_sets(arr1, arr2)
+    return union
+def intersection_of_arrays(arr1, arr2):
+    intersection = []
+    i, j = 0, 0
+    while i < len(arr1) and j < len(arr2):
+        if arr1[i] < arr2[j]:
+            i += 1
+        elif arr1[i] > arr2[j]:
+            j += 1
+        else:
+            intersection.append(arr1[i])
+            i += 1
+            j += 1
+    return intersection
