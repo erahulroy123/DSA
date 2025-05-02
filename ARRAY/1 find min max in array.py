@@ -29,3 +29,12 @@ def find_max_min_two_pointer(arr):
         left += 1
         right -= 1
     return max_val, min_val
+
+#top k elements
+import heapq
+def find_max_min_top_k(arr):
+    if not arr:
+        return None, None
+    max_val = -heapq.nsmallest(1, arr)[0]
+    min_val = heapq.nsmallest(1, arr)[0]
+    return max_val, min_val
